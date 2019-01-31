@@ -1,53 +1,59 @@
-# Invillia recruitment challenge
+# interviews-invillia
+Project specific to Invillia interviews recruitment challenge.<br>
+The tasks developed is a little bit different, maybe because the description is not clear. <br>
+In meantime, to create a Order and a Payment, I choose to not pass the states attribute by a request. The program will change the state when a payment or a refund is requested. 
 
-[![Build Status](https://travis-ci.org/shelsonjava/invillia.svg?branch=master)](https://travis-ci.org/shelsonjava/invillia)
 
-![Invillia Logo](https://invillia.com/public/assets/img/logo-invillia.svg)
-[Invillia](https://https://www.invillia.com/) - A transformação começa aqui.
+## How to run
+### Requirements
+* Java 8
+* Maven
+* H2 database
 
-The ACME company is migrating their monolithic system to a microservice architecture and you’re responsible to build their MVP (minimum viable product)  .
-https://en.wikipedia.org/wiki/Minimum_viable_product
+### Run
+```bash
+mvn clean install
+java -jar backend-challenge-ws/target/backend-challenge-ws-0.0.1-SNAPSHOT.war
+```
+## Server.
+In this challenge, I choose to use Spring Boot Starter to not get attached to container configuration. But, in larger system in production,
+I'll look up to configure and deploy to a AWS platform.   
 
-Your challenge is:
-Build an application with those features described below, if you think the requirements aren’t detailed enough please leave a comment (portuguese or english) and proceed as best as you can.
 
-You can choose as many features you think it’s necessary for the MVP,  IT’S NOT necessary build all the features, we strongly recommend to focus on quality over quantity, you’ll be evaluated by the quality of your solution.
+## Database configuration
+This project use H2 as database solution example. But migrate to a corporate database system like Oracle DB or PostGre, its is a best solution. In case of bigdata context, mongoDB seems to be a better alternative to database 
+<br>Follow the database specification:
 
-If you think something is really necessary but you don’t have enough time to implement please at least explain how you would implement it.
+```properties
+spring.datasource.url=jdbc:h2:file:~/test <br>
+spring.datasource.username=sa<br> 
+spring.datasource.password=<br>
+spring.datasource.driver-class-name=org.h2.Driver<br>
+```
+### Security
+Not using any type of security, however I would configure token based authentication (JWT) or Spring Security Authentication provider (OAuth2) to provide restrict service for customers.
 
-## Tasks
+### Swagger
+This project is using Swagger 2. When the app is running, access the link: 
+* http://localhost:8080/invillia/swagger-ui.html 
 
-Your task is to develop one (or more, feel free) RESTful service(s) to:
-* Create a **Store**
-* Update a **Store** information
-* Retrieve a **Store** by parameters
-* Create an **Order** with items
-* Create a **Payment** for an **Order**
-* Retrieve an **Order** by parameters
-* Refund **Order** or any **Order Item**
-
-Fork this repository and submit your code with partial commits.
-
-## Business Rules
-
-* A **Store** is composed by name and address
-* An **Order** is composed by address, confirmation date and status
-* An **Order Item** is composed by description, unit price and quantity.
-* A **Payment** is composed by status, credit card number and payment date
-* An **Order** just should be refunded until ten days after confirmation and the payment is concluded.
+### Unit test
+Unit test is very important to any application, however, provide more time to implement them.
+The frameworks JUnit and Mockito could be use to this task.
+ 
+### *Some things missing*:
+1 - Create a sequence generator for each table. <br>
+2 - Create a converter for LocalDateTime to String on rest response<br>
+3 - Create a converter for Currency  to String or number <br>
+4 - Create handlers (spring advices) for standardize exceptions messages and JSON format <br>
+5 - Configure bundle messages<br>
 
 ## Non functional requirements
+##### *“Speed, Scale, Agility”.*
+To accomplish this three requirement, it's interesting move your application to a Cloud system. 
+In a Cloud System, you can ensure availability and scalability via redundancy, by replicating you system across 
+others virtual machines and use a Loud Balancer to traffic distribution. As well, it's possible to user monitoring programs to auto scaling your application when it demands. <br>
+Fault tolerance, Failover solution will keep your application running when some instance or all system failure, by auto activating another "platform" until the main system back . <br>
 
-Your service(s) must be resilient, fault tolerant, responsive. You should prepare it/them to be highly scalable as possible.
-
-The process should be closest possible to "real-time", balancing your choices in order to achieve the expected
-scalability.
-
-## Nice to have features (describe or implement):
-* Asynchronous processing
-* Database
-* Docker
-* AWS
-* Security
-* Swagger
-* Clean Code
+Thus, using Spring framework, exist a lot of documentation and dependencies to deploy your Spring application to AWS Cloud, integrating easily with 
+AWS messaging, AWS JDBC, AWS Context and AWS Core.     
